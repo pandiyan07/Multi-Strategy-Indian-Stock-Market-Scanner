@@ -39,16 +39,11 @@ eqList = ['RELIANCE.NS', 'TCS.NS', 'HDFCBANK.NS', 'ICICIBANK.NS','BHARTIARTL.NS'
     'DRREDDY.NS', 'TATACONSUM.NS', 'HEROMOTOCO.NS', 'APOLLOHOSP.NS', 'LTIM.NS', 'SHRIRAMFIN.NS'
 ]
 
-#["INFY.NS","ITC.NS","WIPRO.NS","TCS.NS","ABB.NS","RELIANCE.NS","ICICIBANK.NS","SBIN.NS"] 
-#print ('eqlist ------------------- ',eqList)
-# 
+
 n = NSELive()
 
 target_start_hour, target_start_minute, target_start_second = 23, 59, 45
 target_start_time = datetime.now().replace(hour=target_start_hour, minute=target_start_minute, second=target_start_second)
-
-
-
 
 def RSI_14_CALCULATOR(yf_data,event3):
     i=1
@@ -146,13 +141,6 @@ def JUGAAD_DATA_FETCHER(start,end):
     jugaad_output = {}
     for i in range(start,end):
         q = n.stock_quote(eqList[i].replace(".NS", ""))
-        '''jugaad_output.update({'pChange': q['priceInfo']['pChange']})
-        jugaad_output.update({'sector': q['industryInfo']['sector']})
-        jugaad_output.update({'basicIndustry': q['industryInfo']['basicIndustry']})'''
-        #print(f"I am {process_name} in JUGAAD_DATA_FETCHER\n\n\n")
-        #event1.set()
-        #print (f'The JUGAAD_DATA_FETCHER() OUTPUT is :-\n{jugaad_output}\n\n')
-        #event1.wait()
         pChange.append(q['priceInfo']['pChange'])
         sector.append(q['industryInfo']['sector'])
         basicIndustry.append(q['industryInfo']['basicIndustry'])
@@ -171,9 +159,8 @@ def YF_DATA_FETCHER(start,end):
     event4 = multiprocessing.Event()
     event5 = multiprocessing.Event()
     
-    #op = {}
+    
     yf_output = {}
-    #print(f"I am {process_name} in YF_DATA_FETCHER\n\n\n")
     
     for i in range(start, end):
         def appender(yf_data,minutes,time):
@@ -184,8 +171,6 @@ def YF_DATA_FETCHER(start,end):
                 time.sleep(5)
                 YF_DATA_FETCHER(start,end)
             else:
-                #event2.wait()
-                #print("Great..!! The are no ConnectionErrors while fetching the data.")
                 if time == 'before':
                     todays_data = yf_data[yf_data.index.date == pd.to_datetime('today').date()]
                     volume = TOTAL_TRADED_VOLUME(todays_data)
@@ -201,8 +186,6 @@ def YF_DATA_FETCHER(start,end):
                 rsi = RSI_14_CALCULATOR(yf_data.iloc[-14:],event3) 
                 adx = ADX_14_CALCULATOR(yf_data.iloc[-15:],event4)
                 
-                #event3.wait()
-                #event4.wait()
                 if minutes == short_interval:
                     ADX_2m.append(adx)
                     RSI_2m.append(rsi)
@@ -220,20 +203,10 @@ def YF_DATA_FETCHER(start,end):
         
         if current_time <= target_change_time_1:
             yf_data = yf.download(eqList[i], period="2d", interval=short_interval)
-            #print("Fetching data for :- ",stock)
-            #print("ITS BEFORE 9:45AM NOW -")
-            #print(f"I am {process_name}\n\n\n")
             appender(yf_data,short_interval,'before')
-            #print("Introducing a 2-min delay.......")
-            #time.sleep(120)
         else:
             yf_data = yf.download(eqList[i], period="1d", interval=short_interval)
-            #print("Fetching data for :- ",stock)
-            #print("ITS AFTER 9:45AM NOW -")
-            #print(f"I am {process_name}\n\n\n")
             appender(yf_data,short_interval,'after')
-            #print("Introducing a 2-min delay.......")
-            #time.sleep(120)
         
         
         '''Data fetching for 5-minute candle'''
@@ -242,48 +215,17 @@ def YF_DATA_FETCHER(start,end):
         
         if current_time <= target_change_time_2:
             yf_data = yf.download(eqList[i], period="2d", interval=long_interval)
-            #print("Fetching data for :- ",stock)
-            #print("ITS BEFORE 10:30AM NOW -")
-            #print(f"I am {process_name}\n\n\n")
             appender(yf_data,long_interval,'before')
-            #print("Introducing a 5-min delay.......")
-            #time.sleep(300)
         else:
             yf_data = yf.download(eqList[i], period="1d", interval=long_interval)
-            #print("Fetching data for :- ",stock)
-            #print("ITS AFTER 10:30AM NOW -")
-            #print(f"I am {process_name} \n\n\n")
             appender(yf_data,long_interval,'after')
-            #print("Introducing a 5-min delay.......")
-            #time.sleep(300)
-    #event5.set()
-    #yf_output = op 
-    #print("\n\n\n\n\nthe YF_DATA_FETCHER() yf_output issssssssssssssssssssssssssssssssssssss = \n",yf_output,"\n\n\n\n")
     return yf_output,event5
 
 
 
-def DATAFRAME_GENERATOR(event6):
-    #event6.wait()
-    #print ("\n\n\n\nPROCESSING IS OVER")
-    #print(f"I am {process_name} in DATAFRAME_GENERATOR\n\n\n")
-    
-    
-    '''
-    sorted_final_output_dataframe = final_output_dataframe.sort_values(by='Total Volume', ascending=False)
-    print ("\n\n\nThe sorted Stock data :-\n")
-    print (sorted_final_output_dataframe)
-    print ('\nThe FIRST 3 stocks with highest volume are -',sorted_final_output_dataframe.iloc[:3])
-    print ('\nThe LAST 3 stocks with highest volume are -',sorted_final_output_dataframe.iloc[-3:])
-    '''
+
 
 def FINAL_OUTPUT_DATAFRAME(jugaad_output,yf_output,event6):
-    #print ("\n\nFINAL_OUTPUT_DATAFRAME() jugaad_output is :-\n",jugaad_output)
-    #print ("\n\nFINAL_OUTPUT_DATAFRAME() yf_output is :-\n",yf_output)
-    #print(f"I am {process_name} in FINAL_OUTPUT_DATAFRAME\n\n\n")
-    
-    
-    
 
     for i in range(len(eqList)*2):
         i+=1
@@ -299,7 +241,6 @@ def FINAL_OUTPUT_DATAFRAME(jugaad_output,yf_output,event6):
             final_output_dict.update({'Total Volume': total_traded_volume})
             final_output_dict.update({'Sector': sector})
             final_output_dict.update({'Industry': basicIndustry})
-            #DATAFRAME_GENERATOR(event6)
             
             print("\n\n\nThe Final dictionary -\n\n")
             for key,value in final_output_dict.items():
@@ -318,7 +259,6 @@ def FINAL_OUTPUT_DATAFRAME(jugaad_output,yf_output,event6):
 
 
 def SCHEDULE_TASK(start,end):
-    #print(f"I am {process_name} in SCHEDULE_TASK\n\n\n")
     event6 = multiprocessing.Event()
     print ("THE START IS :-",start)
     print ("THE END IS :-",end)
