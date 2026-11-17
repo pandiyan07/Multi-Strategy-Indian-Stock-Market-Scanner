@@ -4,7 +4,6 @@
 
 # Removed the ADX caluculation completely
 
-#python "d:/Trading/Python/Code/Trading system v3.py"
 
 from nselib import capital_market
 from jugaad_data.nse import NSELive
@@ -27,9 +26,6 @@ except:
     print ('There is NO INTERNET CONNECTION dude...!!')
     sys.exit(1)
 
-
-
-# RUN THIS CODE FROM - 9:16am
 
 
 eqList = ["ABB", "ACC", "APLAPOLLO", "AUBANK", "ADANIENSOL", "ADANIENT", "ADANIGREEN", "ADANIPORTS", 
