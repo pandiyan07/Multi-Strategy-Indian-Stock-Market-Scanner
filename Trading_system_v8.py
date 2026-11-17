@@ -1,22 +1,8 @@
-# Trading system v5 - data fetching using python Multiplprocessing library with multiple processes
+# Trading system v8 - data fetching using python Multiplprocessing library with multiple processes
 # and displaying it on a Flask local web-server
 
 # flask --app Trading_system_v3 run --debug --with-threads
 # --reload --with-threads
-
-
-
-
-# home page should have both ususal BO & ORB table with OI data
-
-# Add a separate page/tab for Swing trading, stocks close to weekly high stocks, 
-# stocks close to 52week high (As per a chartink scanner that you have got from youtube)
-
-# Add a separate page/tab where a table which should have rsi colums & avg_rsi column for all the stocks
-
-
-
-
 
 
 
@@ -40,13 +26,11 @@ trading_system_server = Flask(__name__)
 
 # RUN THIS CODE FROM - 9:16am
 
-
-
 # ALSO SET THE SERVER IN AUTO REFRESHING MODE AFTER EVERY LOOP that runs again which runs again after 5 MINUTES
 # JUST LIKE A DEVELOPMENT SERVER AUTOFREFERESHES EVERYTIME A CHANGE IS MADE TO THE CODE
 
 # When the home page will display the top 10 stocks sorted using ADX values, make sure you create another 
-#                       secondary page where i can print the entire 200 stocks sorted according to the ADX values
+# secondary page where i can print the entire 200 stocks sorted according to the ADX values
 
 
 
@@ -64,20 +48,16 @@ yf_data = yf_data.set_index('Index')'''
 
 
 
-eqList = ['RELIANCE', 'TCS', 'HDFCBANK', 'ICICIBANK','BHARTIARTL', 'SBIN', 'INFY', 'ITC']
-
-''',
+eqList = ['RELIANCE', 'TCS', 'HDFCBANK', 'ICICIBANK','BHARTIARTL', 'SBIN', 'INFY', 'ITC',
     'HINDUNILVR', 'LT', 'BAJFINANCE', 'MARUTI', 'HCLTECH', 'SUNPHARMA', 'NTPC', 'ONGC',
     'AXISBANK', 'ADANIENT', 'TATAMOTORS', 'TITAN', 'KOTAKBANK', 'POWERGRID', 'ADANIPORTS',
     'ULTRACEMCO', 'ASIANPAINT', 'COALINDIA', 'M&M', 'BAJAJFINSV', 'BAJAJ-AUTO', 'NESTLEIND',
     'WIPRO', 'JSWSTEEL', 'TATASTEEL', 'GRASIM', 'SBILIFE', 'HINDALCO', 'BPCL',
     'EICHERMOT', 'HDFCLIFE', 'TECHM', 'INDUSINDBK', 'BRITANNIA', 'CIPLA', 'DIVISLAB',
-    'DRREDDY', 'TATACONSUM', 'HEROMOTOCO', 'APOLLOHOSP','LTIM','SHRIRAMFIN'
-]'''
+    'DRREDDY', 'TATACONSUM', 'HEROMOTOCO', 'APOLLOHOSP','LTIM','SHRIRAMFIN']
 
 
 n = NSELive()
-
 
 
 target_start_hour, target_start_minute, target_start_second = 23, 59, 45
@@ -208,11 +188,10 @@ def DATA_FETCHER(stock,per,shrt_int):
     def df_loop(stock,per,shrt_int,i):
         max_retries = 4
         yf_data = yf.download(stock, period=per, interval=shrt_int)
-        print(f'fetching the data for {stock} once more, \t\t{i}th timeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.........')
+        print(f'fetching the data for {stock} once more, \t\t{i}th time')
         error_detector = ERROR_DETECTOR(str(yf_data), 'Empty DataFrame')
         event.wait()
         print (error_detector)
-        print ('gotaaaaaaaaaaaaaaaaalllllllllllllllllllllllllllllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         print (stock,'\n',yf_data.iloc[-1:])
         while error_detector == True:
             while i < max_retries:
@@ -236,8 +215,6 @@ def DATA_FETCHER(stock,per,shrt_int):
         print (f"Executing the same function again.............for the {stock}...........in the WRONG EMPTY DATAFRAME block!!")
     
     event.set()
-    print ('kkkkkkaaaaaaaaaaaassssssssaaaaaaaaaaaaaammmmmmmmmmmmmmmmmm seeeeeeeeeeeeeeee beeeeeeeeeeee...!!')
-    print ('Bhai saaheb...!! ',stock,'\n',yf_data.iloc[-5:])
     return yf_data
 
 
