@@ -26,7 +26,6 @@ eqList = [
     'DRREDDY', 'TATACONSUM', 'HEROMOTOCO', 'APOLLOHOSP','LTIM','SHRIRAMFIN'
 ]
 
-#["INFY.NS","ITC.NS","WIPRO.NS","TCS.NS","ABB.NS","RELIANCE.NS","ICICIBANK.NS","SBIN.NS"] 
 n = NSELive()
 
 
@@ -160,18 +159,16 @@ def DATA_FETCHER(stock,per,shrt_int):
     def df_loop(stock,per,shrt_int,i):
         max_retries = 10
         yf_data = yf.download(stock, period=per, interval=shrt_int)
-        print(f'fetching the data for {stock} once more, \t\t{i}th timeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.........')
+        print(f'fetching the data for {stock} once more, \t\t{i}th time')
         error_detector = ERROR_DETECTOR(str(yf_data), 'Empty DataFrame')
         event.wait()
         print (error_detector)
-        print ('gotaaaaaaaaaaaaaaaaalllllllllllllllllllllllllllllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         print (stock,'\n',yf_data.iloc[-2:])
         while error_detector == True:
             while i < max_retries:
                 i+=1
                 yf_data = df_loop(stock,per,shrt_int,i)
             return yf_data
-        print ('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeexitttttttttttttttttttttttttttttttttttttttttttttttttt')
     
     
     yf_data = yf.download(stock, period=per, interval=shrt_int)
@@ -179,15 +176,11 @@ def DATA_FETCHER(stock,per,shrt_int):
     if ERROR_DETECTOR(str(yf_data), 'Empty DataFrame'):
         print("MISSION ABORTED..!! Its a Failed download, raising a ConnectionError while fetching the data.")
         print(f"Data fetching failed for {stock} Retrying...")
-        #time.sleep(5)
-        print('\nERROR HAS BEEN DETECTED yf_data ------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> \n',yf_data.iloc[-5:])
         i+=1
         yf_data = df_loop(stock,per,shrt_int,i)
         print (f"Executing the same function again.............for the {stock}...........in the WRONG EMPTY DATAFRAME block!!")
     
     event.set()
-    print ('kkkkkkaaaaaaaaaaaassssssssaaaaaaaaaaaaaammmmmmmmmmmmmmmmmm seeeeeeeeeeeeeeee beeeeeeeeeeee...!!')
-    print ('Bhai saaheb...!! ',stock,'\n',yf_data.iloc[-5:])
     return yf_data
 
 
@@ -218,8 +211,6 @@ def DATA_MANAGER(start,end,pChange,sector,basicIndustry,Stock,RSI_2m,RSI_5m,ADX_
                 sector.append(jg_data['industryInfo']['sector'])
                 basicIndustry.append(jg_data['industryInfo']['basicIndustry'])
                 
-            #print("Introducing a 2-min delay.......")
-            #time.sleep(120)
         else:
             with lock:
                 yf_data = DATA_FETCHER(eqList[i]+'.NS',"1d",short_interval)
@@ -234,8 +225,6 @@ def DATA_MANAGER(start,end,pChange,sector,basicIndustry,Stock,RSI_2m,RSI_5m,ADX_
                 sector.append(jg_data['industryInfo']['sector'])
                 basicIndustry.append(jg_data['industryInfo']['basicIndustry'])
                 
-            #print("Introducing a 2-min delay.......")
-            #time.sleep(120)
         
         
         '''Data fetching for 5-minute candle'''
@@ -248,17 +237,12 @@ def DATA_MANAGER(start,end,pChange,sector,basicIndustry,Stock,RSI_2m,RSI_5m,ADX_
             event.wait()
             APPENDER(yf_data,long_interval,'before',RSI_2m,RSI_5m,ADX_2m,ADX_5m,total_traded_volume,lock)
             event.wait()
-            #print("Introducing a 5-min delay.......")
-            #time.sleep(300)
-            
         else:
             with lock:
                 yf_data = DATA_FETCHER(eqList[i]+'.NS',"1d",long_interval)
             event.wait()
             APPENDER(yf_data,long_interval,'after',RSI_2m,RSI_5m,ADX_2m,ADX_5m,total_traded_volume,lock)
             event.wait()
-            #print("Introducing a 5-min delay.......")
-            #time.sleep(300)
     event.set()
 
 
@@ -326,11 +310,10 @@ if __name__ == '__main__':
         print(f'{key} :- {value}\n\n')
         print('\n',len(value))
     
-    final_output_dataframe = pd.DataFrame(final_output_dict) #, index = final_output_dict['Stock'])
+    final_output_dataframe = pd.DataFrame(final_output_dict) 
     print("\n\n\nTHE FINAL OUTPUT IS :-\n\n",final_output_dataframe)
     
     sorted_final_output_dataframe = final_output_dataframe.sort_values(by='RSI(14) 5m', ascending=False)
     print ("\n\n\nThe sorted Stock data :-\n")
     print (sorted_final_output_dataframe)
     print ('\n\n\nThe FIRST 3 stocks with highest volume are -',sorted_final_output_dataframe.iloc[:7])
-    #print ('\n\n\nThe LAST 3 stocks with highest volume are -',sorted_final_output_dataframe.iloc[-7:])
