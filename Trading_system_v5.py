@@ -1,5 +1,3 @@
-#python "d:/Trading/Python/Code/Trading system v5.py"
-
 '''
 Trading system v5 - 
 -- created THE_MAIN() & OUTPUT_PRINTER() functions
@@ -22,14 +20,9 @@ event = multiprocessing.Event()
 try:
     n = NSELive()
 except Exception as e:
-    print ('\n\n\n\n\n\n',repr(e))
-    print ('There is NO INTERNET CONNECTION dude...!!\n\n\n\n\n\n')
+    print ('\n',repr(e))
+    print ('There is NO INTERNET CONNECTION')
     sys.exit(1)
-
-
-
-#eqList = ["INFY.NS","ITC.NS","WIPRO.NS","TCS.NS", 'HDFCBANK.NS', 'ICICIBANK.NS','BHARTIARTL.NS', 'SBIN.NS', "AUBANK.NS", "HEROMOTOCO.NS"]
-
 
 eqList = ["ABB.NS", "ACC.NS","APLAPOLLO.NS", "AUBANK.NS", "ADANIENSOL.NS", "ADANIENT.NS", "ADANIGREEN.NS", "ADANIPORTS.NS", "MCDOWELL-N.NS",
 "ADANIPOWER.NS", "ATGL.NS", "ABCAPITAL.NS", "ABFRL.NS", "ALKEM.NS", "AMBUJACEM.NS", "APOLLOHOSP.NS", "APOLLOTYRE.NS", "ASHOKLEY.NS", 
@@ -67,7 +60,7 @@ def RSI_14_CALCULATOR(yf_cp_list,event):
     else:
         print("WARNING :- NUMBER OF PRICES ARE LESS THAN 14 DATA POINTS...!!\n")
         print('The length of close price list is = \n',len(yf_cp_list))
-        print ('\n\n\n\n\n\n So thats why exiting the programe................. \n\n\n\n\n\n')
+        print ('\n So thats why exiting the program... \n')
         sys.exit(1)
     gains = []
     losses = []
@@ -184,8 +177,8 @@ def APPENDER(start, end, yfd_dict, vol_cal,RSI_2m, RSI_5m, Stock,
         try:
             jg_data = n.stock_quote(eqList[i].replace(".NS", ""))
         except Exception as e:
-            print ('\n\n\n\n\n\n',repr(e))
-            print ('\n\n\n\n\n\nERROR = Couldnt reach the NSE server for the STOCK QUOTE, so try again sometime later..!!\n\n\n\n\n\n')
+            print ('\n\n',repr(e))
+            print ('\n\nERROR = Couldnt reach the NSE server for the STOCK QUOTE, so try again sometime later..!!')
         
         '''    RSI COLUMN   '''
         for key,value in yfd_dict.items():
@@ -350,8 +343,8 @@ def THE_MAIN(Stock,pChange,total_traded_volume,last_three_volume,RSI_2m,RSI_5m,b
         try:
             nifty200 = n.live_index("NIFTY 200")
         except Exception as e:
-            print ('\n\n\n\n\n\n',repr(e))
-            print ('\n\n\n\n\n\nERROR = Couldnt reach the NSE server for the LIVE INDEX data, so try again sometime later\n\n\n\n\n\n')
+            print ('\n\n',repr(e))
+            print ('\n\nERROR = Couldnt reach the NSE server for the LIVE INDEX data, so try again sometime later')
         
         pp = 0
         pm = 0
@@ -379,8 +372,8 @@ def THE_MAIN(Stock,pChange,total_traded_volume,last_three_volume,RSI_2m,RSI_5m,b
         try:
             final_output_rsi_dataframe = pd.DataFrame(final_rsi_output_dict)
         except Exception as e:
-            print ('\n\n\n\n\n\n',repr(e))
-            print ('\n\n\n\n\n\nValueError: All arrays must be of the same length..!!\n\n\n\n\n\n')    
+            print ('\n\n',repr(e))
+            print ('\n\nValueError: All arrays must be of the same length..!!')    
         
         if advances >= declines:
             '''TOP 10 RSI STOCKS'''    
@@ -405,8 +398,8 @@ def THE_MAIN(Stock,pChange,total_traded_volume,last_three_volume,RSI_2m,RSI_5m,b
         try:
             final_output_breakout_dataframe = pd.DataFrame(final_output_breakout_dict)
         except Exception as e:
-            print ('\n\n\n\n\n\n',repr(e))
-            print ('\n\n\n\n\n\nValueError: All arrays must be of the same length..!!\n\n\n\n\n\n')
+            print ('\n\n',repr(e))
+            print ('\n\nValueError: All arrays must be of the same length..!!\n\n\n\n\n\n')
         
         
         c = final_output_breakout_dataframe[(final_output_breakout_dataframe["BO trend"] == '+') | (final_output_breakout_dataframe["BO trend"] == 'BEARISH')]
@@ -422,8 +415,7 @@ def THE_MAIN(Stock,pChange,total_traded_volume,last_three_volume,RSI_2m,RSI_5m,b
 
         '''    PRINTING THE FINAL OUTPUT    '''
         j += 1
-        OUTPUT_PRINTER(j,pp,pm,current_time,advances,declines,unchanged,
-            sorted_final_output_rsi_dataframe,sorted_final_output_breakout_dataframe)
+        OUTPUT_PRINTER(j,pp,pm,current_time,advances,declines,unchanged,sorted_final_output_rsi_dataframe,sorted_final_output_breakout_dataframe)
         
         Stock = manager.list()
         pChange = manager.list()
@@ -467,7 +459,6 @@ if __name__ == '__main__':
     print ('\n\nthe code has started to run.......')
     
     if target_start_time < datetime.now():
-        print (f"Adangomma, the specified time {target_start_time} has already passed daa....!!")
         print ("exiting the program !!")
         sys.exit(1)
 
@@ -491,6 +482,4 @@ if __name__ == '__main__':
     final_rsi_output_dict = {}
     final_output_breakout_dict = {}
 
-    THE_MAIN(Stock,pChange,total_traded_volume,last_three_volume,
-        RSI_2m,RSI_5m,breakout,bopp,bull_BO,bear_BO,yfd_dict,lock,
-        processes,final_rsi_output_dict,final_output_breakout_dict)
+    THE_MAIN(Stock,pChange,total_traded_volume,last_three_volume,RSI_2m,RSI_5m,breakout,bopp,bull_BO,bear_BO,yfd_dict,lock,processes,final_rsi_output_dict,final_output_breakout_dict)
