@@ -35,10 +35,6 @@ except:
 # RUN THIS CODE FROM THE START OF THE MARKET AT - 9:16am
 
 
-#eqList = ["INFY.NS","ITC.NS","WIPRO.NS","TCS.NS", 'HDFCBANK.NS', 'ICICIBANK.NS','BHARTIARTL.NS', 'SBIN.NS', "AUBANK.NS", "HEROMOTOCO.NS"]
-
-
-
 eqList = ["ABB.NS", "ACC.NS","APLAPOLLO.NS", "AUBANK.NS", "ADANIENSOL.NS", "ADANIENT.NS", "ADANIGREEN.NS", "ADANIPORTS.NS", "MCDOWELL-N.NS",
 "ADANIPOWER.NS", "ATGL.NS", "ABCAPITAL.NS", "ABFRL.NS", "ALKEM.NS", "AMBUJACEM.NS", "APOLLOHOSP.NS", "APOLLOTYRE.NS", "ASHOKLEY.NS", 
 "ASIANPAINT.NS", "ASTRAL.NS", "AUROPHARMA.NS", "DMART.NS", "AXISBANK.NS", "BSE.NS", "BAJAJ-AUTO.NS", "BAJFINANCE.NS", "BAJAJFINSV.NS", 
@@ -74,7 +70,6 @@ def RSI_14_CALCULATOR(yf_cp_list,event):
     else:
         print("WARNING :- NUMBER OF PRICES ARE LESS THAN 14 DATA POINTS...!!\n")
         print('The length of close price list is = \n',len(yf_cp_list))
-        print ('\n\n\n\n\n\n So thats why exiting the programe................. \n\n\n\n\n\n')
         sys.exit(1)
     gains = []
     losses = []
@@ -108,10 +103,7 @@ def TOTAL_TRADED_VOLUME(todays_data,event):
 
 
 
-
-
-def APPENDER(start, end, yfd_dict, vol_cal, RSI_2m, RSI_5m, RSI_1d, RSI_1wk, RSI_1mo, Stock,
-            total_traded_volume, pChange,sector, basicIndustry, lock):
+def APPENDER(start, end, yfd_dict, vol_cal, RSI_2m, RSI_5m, RSI_1d, RSI_1wk, RSI_1mo, Stock, total_traded_volume, pChange,sector, basicIndustry, lock):
     for i in range(start, end): 
         yf_all_stocks_data = yfd_dict['2m']
         yf_data = yf_all_stocks_data[(eqList[i])]
@@ -204,7 +196,6 @@ if __name__ == '__main__':
     
     print('the code has started to run.......')
     if target_start_time < datetime.now():
-        print (f"Adangomma, the specified time {target_start_time} has already passed daa....!!")
         print ("exiting the program !!")
         sys.exit(1)
     
@@ -293,8 +284,6 @@ if __name__ == '__main__':
         final_output_dict.update({'RSI(14) 1wk': list(RSI_1wk)})
         final_output_dict.update({'RSI(14) 1mo': list(RSI_1mo)})
         final_output_dict.update({'Total Volume': list(total_traded_volume)})
-        #final_output_dict.update({'Sector': list(sector)})
-        #final_output_dict.update({'Industry': list(basicIndustry)})
         
         
         current_time = datetime.now()
