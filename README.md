@@ -21,6 +21,8 @@
 
 ## About The Project
 
+Built on - May 2024
+
 Trading System is a modular Python-based market analysis platform for
 Indian equities that evolved through multiple versions (v1--v8). It
 combines live NSE market data, Yahoo Finance historical data,
@@ -72,8 +74,8 @@ pip install pandas yfinance nselib jugaad-data flask
 ### Installation
 
 ``` bash
-git clone https://github.com/yourusername/trading-system.git
-cd trading-system
+git clone https://github.com/pandiyan07/Multi-Strategy-Indian-Stock-Market-Scanner.git
+cd Multi-Strategy-Indian-Stock-Market-Scanner
 pip install -r requirements.txt
 python Trading_system_v5.py
 ```
