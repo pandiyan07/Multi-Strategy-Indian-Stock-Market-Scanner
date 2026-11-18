@@ -1,6 +1,6 @@
 # Project Title
 
-**Trading System -- Multi-Strategy Indian Stock Market Scanner**
+**Trading System - Multi-Strategy Indian Stock Market Scanner**
 
 ## Table of Contents
 
@@ -24,7 +24,7 @@
 Built on - May 2024
 
 Trading System is a modular Python-based market analysis platform for
-Indian equities that evolved through multiple versions (v1--v8). It
+Indian equities that evolved through multiple versions (v1-v8). It
 combines live NSE market data, Yahoo Finance historical data,
 multiprocessing, scheduled execution, technical indicator calculations,
 price and volume breakout detection, ORB analysis, and Flask dashboard
@@ -82,7 +82,7 @@ python Trading_system_v5.py
 
 ## Usage
 
-Execute any version (v1--v8) depending on the required functionality.
+Execute any version (v1-v8) depending on the required functionality.
 The system downloads market data, performs technical analysis, detects
 trading opportunities, and prints or serves the results.
 
@@ -141,12 +141,12 @@ Trading_system_v8.py      # Flask dashboard integration
 
 ## Version History
 
--   v1 -- Single-process implementation
--   v2 -- Multiprocessing
--   v3 -- Scheduled periodic scanning
--   v4 -- Batch market-data downloads
--   v5 -- Modular breakout engine
--   v8 -- Flask dashboard integration
+-   v1 - Single-process implementation
+-   v2 - Multiprocessing
+-   v3 - Scheduled periodic scanning
+-   v4 - Batch market-data downloads
+-   v5 - Modular breakout engine
+-   v8 - Flask dashboard integration
 
 ## Future Roadmap
 
